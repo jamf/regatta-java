@@ -17,7 +17,7 @@ dependencies {
     api("com.google.protobuf:protobuf-java:${protobufVersion}")
     api("io.grpc:grpc-core:${grpcVersion}")
     api("io.grpc:grpc-stub:${grpcVersion}")
-    api("io.grpc:grpc-netty:${grpcVersion}")
+    api("io.grpc:grpc-netty-shaded:${grpcVersion}")
 
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.

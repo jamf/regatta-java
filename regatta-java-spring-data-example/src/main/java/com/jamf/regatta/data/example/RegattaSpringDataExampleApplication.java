@@ -17,6 +17,8 @@ import com.jamf.regatta.data.core.RegattaKeyValueAdapter;
 import com.jamf.regatta.data.core.RegattaKeyValueTemplate;
 import com.jamf.regatta.data.example.entity.BlockCaCertChain;
 
+import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
+
 @SpringBootApplication
 @EnableRegattaRepositories
 public class RegattaSpringDataExampleApplication {
@@ -29,7 +31,7 @@ public class RegattaSpringDataExampleApplication {
 
 	@Bean
 	public Client regattaClient() throws SSLException {
-		return Client.builder().target("reg.dev.wandera.co.uk:443").insecureSkipTLSVerify(true).build();
+		return Client.builder().target("reg.dev.wandera.co.uk:443").negotiationType(NegotiationType.TLS).insecureSkipTLSVerify(true).build();
 	}
 
 	@Bean

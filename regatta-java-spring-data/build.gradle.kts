@@ -9,11 +9,9 @@ repositories {
 }
 
 dependencies {
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api("org.apache.commons:commons-math3:3.6.1")
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation("com.google.guava:guava:32.1.1-jre")
+    api("org.springframework.data:spring-data-keyvalue:3.2.0")
+    api("org.springframework:spring-context-support:6.1.0")
+    api(project(":regatta-java-core"))
 }
 
 testing {

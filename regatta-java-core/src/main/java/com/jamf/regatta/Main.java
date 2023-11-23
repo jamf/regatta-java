@@ -36,7 +36,7 @@ public class Main {
 					TEST_KEY_BYTE
 			);
 
-			var result = getResponse.getKvs(0).getValue().toStringUtf8();
+			var result = getResponse.kvs().get(0).value();
 			LOGGER.info("Result: '{}'", result);
 
 			LOGGER.info("Deleting from regatta, key: {}", TEST_KEY);

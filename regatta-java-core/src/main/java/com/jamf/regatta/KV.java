@@ -1,8 +1,8 @@
 package com.jamf.regatta;
 
-import com.jamf.regatta.proto.DeleteRangeResponse;
-import com.jamf.regatta.proto.RangeResponse;
-import com.jamf.regatta.proto.PutResponse;
+import com.jamf.regatta.api.DeleteResponse;
+import com.jamf.regatta.api.GetResponse;
+import com.jamf.regatta.api.PutResponse;
 
 public interface KV extends CloseableClient {
 
@@ -23,14 +23,14 @@ public interface KV extends CloseableClient {
 	 * @param key   key in ByteSequence
 	 * @return GetResponse
 	 */
-	RangeResponse get(ByteSequence table, ByteSequence key); //TODO use custom DTO
+	GetResponse get(ByteSequence table, ByteSequence key); //TODO use custom DTO
 
 	/**
 	 * delete value with given key.
 	 *
 	 * @param table table in ByteSequence
 	 * @param key   key in ByteSequence
-	 * @return GetResponse
+	 * @return DeleteResponse
 	 */
-	DeleteRangeResponse delete(ByteSequence table, ByteSequence key); //TODO use custom DTO
+	DeleteResponse delete(ByteSequence table, ByteSequence key); //TODO use custom DTO
 }

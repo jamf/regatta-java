@@ -13,4 +13,4 @@ plugins {
 rootProject.name = "regatta-java"
 include("regatta-java-grpc")
 include("regatta-java-core")
-include("regatta-java-jpa")
+include("regatta-java-spring-data")

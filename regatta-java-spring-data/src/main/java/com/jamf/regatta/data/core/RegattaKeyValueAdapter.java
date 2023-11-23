@@ -1,12 +1,12 @@
 package com.jamf.regatta.data.core;
 
+import com.jamf.regatta.ByteSequence;
 import com.jamf.regatta.Client;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.keyvalue.core.AbstractKeyValueAdapter;
-import org.springframework.data.keyvalue.core.KeyValueAdapter;
 import org.springframework.data.util.CloseableIterator;
 
 import java.util.Map;
@@ -27,7 +27,7 @@ public class RegattaKeyValueAdapter extends AbstractKeyValueAdapter implements I
 
     @Override
     public Object put(Object id, Object item, String keyspace) {
-        return null;
+        return regattaClient.getKVClient().put(ByteSequence.fromUtf8String(keyspace), ByteSequence.from((byte[]) id), ByteSequence.from((byte[]) item));
     }
 
     @Override
@@ -37,12 +37,12 @@ public class RegattaKeyValueAdapter extends AbstractKeyValueAdapter implements I
 
     @Override
     public Object get(Object id, String keyspace) {
-        return null;
+        return regattaClient.getKVClient().get(ByteSequence.fromUtf8String(keyspace), ByteSequence.from((byte[]) id));
     }
 
     @Override
     public Object delete(Object id, String keyspace) {
-        return null;
+        return regattaClient.getKVClient().delete(ByteSequence.fromUtf8String(keyspace), ByteSequence.from((byte[]) id));
     }
 
     @Override

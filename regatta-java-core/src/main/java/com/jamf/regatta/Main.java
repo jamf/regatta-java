@@ -5,6 +5,8 @@ import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.grpc.netty.NegotiationType;
+
 public class Main {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -21,7 +23,11 @@ public class Main {
 	private static final ByteSequence TABLE = ByteSequence.from("block-ca-cert-chains", StandardCharsets.UTF_8);
 
 	public static void main(String[] args) {
-		try (var client = Client.builder().target("reg.dev.wandera.co.uk:443").build().getKVClient()) {
+		try (var client = Client.builder()
+				.target("reg.dev.wandera.co.uk:443")
+				.negotiationType(NegotiationType.TLS)
+				.insecureSkipTLSVerify(true)
+				.build().getKVClient()) {
 
 			LOGGER.info("Writing to regatta under key: {}", TEST_KEY);
 			client.put(

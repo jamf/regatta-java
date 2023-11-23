@@ -30,8 +30,10 @@ public class RegattaSpringDataExampleApplication {
 
 	@Bean
 	public Client regattaClient() throws SSLException {
-		return Client.builder().target("reg.dev.wandera.co.uk:443").negotiationType(NegotiationType.TLS).insecureSkipTLSVerify(true)
-				.build();
+		return Client.builder()
+				.target("reg.dev.wandera.co.uk:443")
+				.negotiationType(NegotiationType.TLS)
+				.insecureSkipTLSVerify(true).build();
 	}
 
 	@Bean

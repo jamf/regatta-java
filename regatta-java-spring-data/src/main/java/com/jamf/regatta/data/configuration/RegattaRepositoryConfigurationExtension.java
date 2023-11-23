@@ -11,7 +11,7 @@ public class RegattaRepositoryConfigurationExtension extends KeyValueRepositoryC
 
     @Override
     protected String getDefaultKeyValueTemplateRef() {
-        return "regattaKeyValueTemplate";
+        return "regattaTemplateRef";
     }
 
 }

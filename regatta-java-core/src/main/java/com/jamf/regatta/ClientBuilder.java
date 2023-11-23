@@ -1,9 +1,13 @@
 package com.jamf.regatta;
 
+import javax.net.ssl.SSLException;
+
 import com.google.common.base.Strings;
 import com.jamf.regatta.impl.ClientImpl;
 
-import io.grpc.ManagedChannelBuilder;
+import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.NettyChannelBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 public class ClientBuilder {
 
@@ -41,10 +45,12 @@ public class ClientBuilder {
 	 *
 	 * @return Client instance.
 	 */
-	public Client build() {
+	public Client build() throws SSLException {
 		Preconditions.checkState(target != null, "please configure etcd server endpoints before build.");
 
-		var channel = ManagedChannelBuilder.forTarget(target).usePlaintext().build();
+		var channel = NettyChannelBuilder.forTarget(target)
+				.sslContext(GrpcSslContexts.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build())
+				.build();
 		return new ClientImpl(channel);
 	}
 }

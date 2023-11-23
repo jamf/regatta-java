@@ -15,6 +15,10 @@ public class RegattaKeyValueAdapter extends AbstractKeyValueAdapter implements I
 
     private Client regattaClient;
 
+    public RegattaKeyValueAdapter(Client regattaClient) {
+        this.regattaClient = regattaClient;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
 
@@ -37,7 +41,7 @@ public class RegattaKeyValueAdapter extends AbstractKeyValueAdapter implements I
 
     @Override
     public Object get(Object id, String keyspace) {
-        return regattaClient.getKVClient().get(ByteSequence.fromUtf8String(keyspace), ByteSequence.from((byte[]) id));
+        return regattaClient.getKVClient().get(ByteSequence.fromUtf8String(keyspace), ByteSequence.fromUtf8String((String) id));
     }
 
     @Override

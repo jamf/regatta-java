@@ -127,6 +127,10 @@ public final class ByteSequence {
         return byteString.toStringUtf8();
     }
 
+    public static ByteSequence fromUtf8String(String source) {
+        return new ByteSequence(ByteString.copyFromUtf8(source));
+    }
+
     /**
      * Create new ByteSequence from a String.
      *

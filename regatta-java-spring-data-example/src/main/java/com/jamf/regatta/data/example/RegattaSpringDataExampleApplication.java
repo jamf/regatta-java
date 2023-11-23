@@ -1,5 +1,7 @@
 package com.jamf.regatta.data.example;
 
+import javax.net.ssl.SSLException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.keyvalue.core.KeyValueAdapter;
 import org.springframework.data.keyvalue.core.KeyValueOperations;
 
+import com.jamf.regatta.Client;
 import com.jamf.regatta.data.configuration.EnableRegattaRepositories;
 import com.jamf.regatta.data.core.RegattaKeyValueAdapter;
 import com.jamf.regatta.data.core.RegattaKeyValueTemplate;
@@ -25,22 +28,24 @@ public class RegattaSpringDataExampleApplication {
 	}
 
 	@Bean
-	public KeyValueOperations regattaTemplateRef() {
-		return new RegattaKeyValueTemplate(regattaKeyValueAdapter());
+	public Client regattaClient() throws SSLException {
+		return Client.builder().target("reg.dev.wandera.co.uk:443").insecureSkipTLSVerify(true).build();
 	}
 
 	@Bean
-	public KeyValueAdapter regattaKeyValueAdapter() {
-		return new RegattaKeyValueAdapter();
+	public KeyValueOperations regattaTemplateRef(Client regattaClient) {
+		return new RegattaKeyValueTemplate(regattaKeyValueAdapter(regattaClient));
 	}
 
 	@Bean
-	public CommandLineRunner findAllBlockCaCertChains(KeyValueOperations regattaTemplateRef) {
-		return args -> {
-			Iterable<BlockCaCertChain> certs = regattaTemplateRef.findAll(BlockCaCertChain.class);
-			LOGGER.info("Certs fetched: {}", certs);
-		};
+	public KeyValueAdapter regattaKeyValueAdapter(Client regattaClient) {
+		return new RegattaKeyValueAdapter(regattaClient);
+	}
 
+	@Bean
+	public CommandLineRunner findBlockCaCertChain(KeyValueOperations regattaTemplateRef) {
+		return args -> regattaTemplateRef.findById("GLOBAL_CA", BlockCaCertChain.class)
+					.ifPresent(cert -> LOGGER.info("Cert fetched: {}", cert));
 	}
 
 }

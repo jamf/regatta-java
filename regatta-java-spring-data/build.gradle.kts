@@ -12,6 +12,8 @@ dependencies {
     api("org.springframework.data:spring-data-keyvalue:3.2.0")
     api("org.springframework:spring-context-support:6.1.0")
     api(project(":regatta-java-core"))
+
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0")
 }
 
 testing {

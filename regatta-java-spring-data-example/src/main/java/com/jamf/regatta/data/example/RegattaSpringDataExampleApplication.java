@@ -8,7 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.keyvalue.core.KeyValueAdapter;
 import org.springframework.data.keyvalue.core.KeyValueOperations;
 
 import com.jamf.regatta.Client;
@@ -31,23 +30,19 @@ public class RegattaSpringDataExampleApplication {
 
 	@Bean
 	public Client regattaClient() throws SSLException {
-		return Client.builder().target("reg.dev.wandera.co.uk:443").negotiationType(NegotiationType.TLS).insecureSkipTLSVerify(true).build();
+		return Client.builder().target("reg.dev.wandera.co.uk:443").negotiationType(NegotiationType.TLS).insecureSkipTLSVerify(true)
+				.build();
 	}
 
 	@Bean
 	public KeyValueOperations regattaTemplateRef(Client regattaClient) {
-		return new RegattaKeyValueTemplate(regattaKeyValueAdapter(regattaClient));
-	}
-
-	@Bean
-	public KeyValueAdapter regattaKeyValueAdapter(Client regattaClient) {
-		return new RegattaKeyValueAdapter(regattaClient);
+		return new RegattaKeyValueTemplate(new RegattaKeyValueAdapter(regattaClient));
 	}
 
 	@Bean
 	public CommandLineRunner findBlockCaCertChain(KeyValueOperations regattaTemplateRef) {
 		return args -> regattaTemplateRef.findById("GLOBAL_CA", BlockCaCertChain.class)
-					.ifPresent(cert -> LOGGER.info("Cert fetched: {}", cert));
+				.ifPresent(cert -> LOGGER.info("Cert fetched: {}", cert));
 	}
 
 }

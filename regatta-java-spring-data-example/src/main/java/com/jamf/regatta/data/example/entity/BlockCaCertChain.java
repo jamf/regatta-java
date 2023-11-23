@@ -1,6 +1,8 @@
 package com.jamf.regatta.data.example.entity;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.keyvalue.annotation.KeySpace;
@@ -10,7 +12,7 @@ public class BlockCaCertChain {
 
 	@Id
 	String customerId;
-	CertificateChain certificateChain;
+	List<CertificateChain> certificateChain;
 
 	public String getCustomerId() {
 		return customerId;
@@ -20,11 +22,11 @@ public class BlockCaCertChain {
 		this.customerId = customerId;
 	}
 
-	public CertificateChain getCertificateChain() {
+	public List<CertificateChain> getCertificateChain() {
 		return certificateChain;
 	}
 
-	public void setCertificateChain(CertificateChain certificateChain) {
+	public void setCertificateChain(List<CertificateChain> certificateChain) {
 		this.certificateChain = certificateChain;
 	}
 
@@ -43,5 +45,13 @@ public class BlockCaCertChain {
 	@Override
 	public int hashCode() {
 		return Objects.hash(customerId, certificateChain);
+	}
+
+	@Override
+	public String toString() {
+		return new StringJoiner(", ", BlockCaCertChain.class.getSimpleName() + "[", "]")
+				.add("customerId='" + customerId + "'")
+				.add("certificateChain=" + certificateChain)
+				.toString();
 	}
 }

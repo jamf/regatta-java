@@ -1,3 +1,6 @@
+val grpcVersion = "1.57.2"
+val protobufVersion = "3.25.1"
+
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
@@ -14,6 +17,11 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation("com.google.guava:guava:32.1.1-jre")
+    implementation(project(":regatta-java-grpc"))
+
+    api("com.google.protobuf:protobuf-java:${protobufVersion}")
+    api("io.grpc:grpc-core:${grpcVersion}")
+    api("io.grpc:grpc-stub:${grpcVersion}")
 }
 
 testing {

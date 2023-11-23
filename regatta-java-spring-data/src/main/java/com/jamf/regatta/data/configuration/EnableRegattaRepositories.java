@@ -1,6 +1,7 @@
 package com.jamf.regatta.data.configuration;
 
 import com.jamf.regatta.data.query.RegattaQueryCreator;
+import com.jamf.regatta.data.repository.RegattaRepositoryFactoryBean;
 
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
@@ -21,5 +22,8 @@ public @interface EnableRegattaRepositories {
 	Class<?>[] basePackageClasses() default {};
 	Filter[] includeFilters() default {};
 	Filter[] excludeFilters() default {};
+	Class<?> repositoryFactoryBeanClass() default RegattaRepositoryFactoryBean.class;
+	String namedQueriesLocation() default "";
+	String repositoryImplementationPostfix() default "Impl";
 	String keyValueTemplateRef() default "regattaTemplateRef";
 }

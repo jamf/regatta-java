@@ -3,6 +3,8 @@ package com.jamf.regatta.impl;
 import com.google.protobuf.ByteString;
 import com.jamf.regatta.ByteSequence;
 import com.jamf.regatta.KV;
+import com.jamf.regatta.proto.DeleteRangeRequest;
+import com.jamf.regatta.proto.DeleteRangeResponse;
 import com.jamf.regatta.proto.KVGrpc;
 import com.jamf.regatta.proto.PutRequest;
 import com.jamf.regatta.proto.PutResponse;
@@ -38,5 +40,15 @@ public class KVImpl implements KV {
 				.build();
 
 		return stub.range(request);
+	}
+
+	@Override
+	public DeleteRangeResponse delete(ByteSequence table, ByteSequence key) {
+		var request = DeleteRangeRequest.newBuilder()
+				.setTable(ByteString.copyFrom(table.getBytes()))
+				.setKey(ByteString.copyFrom(key.getBytes()))
+				.build();
+
+		return stub.deleteRange(request);
 	}
 }

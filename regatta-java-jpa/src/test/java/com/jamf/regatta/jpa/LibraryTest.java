@@ -3,7 +3,6 @@
  */
 package com.jamf.regatta.jpa;
 
-import com.jamf.regatta.core.Library;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

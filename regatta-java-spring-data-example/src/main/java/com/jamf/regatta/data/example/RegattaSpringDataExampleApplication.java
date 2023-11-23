@@ -14,7 +14,7 @@ import com.jamf.regatta.Client;
 import com.jamf.regatta.data.configuration.EnableRegattaRepositories;
 import com.jamf.regatta.data.core.RegattaKeyValueAdapter;
 import com.jamf.regatta.data.core.RegattaKeyValueTemplate;
-import com.jamf.regatta.data.example.entity.BlockCaCertChain;
+import com.jamf.regatta.data.example.repository.BlockCaCertChainRepository;
 
 import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;
 
@@ -42,8 +42,8 @@ public class RegattaSpringDataExampleApplication {
 	}
 
 	@Bean
-	public CommandLineRunner findBlockCaCertChain(KeyValueOperations regattaTemplateRef) {
-		return args -> regattaTemplateRef.findById("GLOBAL_CA", BlockCaCertChain.class)
+	public CommandLineRunner findBlockCaCertChain(BlockCaCertChainRepository blockCaCertChainRepository) {
+		return args -> blockCaCertChainRepository.findById("GLOBAL_CA")
 				.ifPresent(cert -> LOGGER.info("Cert fetched: {}", cert));
 	}
 

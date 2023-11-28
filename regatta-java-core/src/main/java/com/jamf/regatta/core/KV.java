@@ -1,11 +1,12 @@
-package com.jamf.regatta;
+package com.jamf.regatta.core;
 
-import com.jamf.regatta.api.DeleteResponse;
-import com.jamf.regatta.api.GetResponse;
-import com.jamf.regatta.api.PutResponse;
-import com.jamf.regatta.options.DeleteOption;
-import com.jamf.regatta.options.GetOption;
-import com.jamf.regatta.options.PutOption;
+import com.jamf.regatta.core.api.ByteSequence;
+import com.jamf.regatta.core.api.DeleteResponse;
+import com.jamf.regatta.core.api.GetResponse;
+import com.jamf.regatta.core.api.PutResponse;
+import com.jamf.regatta.core.options.DeleteOption;
+import com.jamf.regatta.core.options.GetOption;
+import com.jamf.regatta.core.options.PutOption;
 
 public interface KV extends CloseableClient {
 

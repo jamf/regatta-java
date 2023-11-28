@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.jamf.regatta.options;
+package com.jamf.regatta.core.options;
 
-import com.jamf.regatta.ByteSequence;
+import com.jamf.regatta.core.api.ByteSequence;
 
 import java.util.Optional;
 

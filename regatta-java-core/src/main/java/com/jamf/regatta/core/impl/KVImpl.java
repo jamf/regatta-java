@@ -1,12 +1,12 @@
-package com.jamf.regatta.impl;
+package com.jamf.regatta.core.impl;
 
 import com.google.protobuf.ByteString;
-import com.jamf.regatta.ByteSequence;
-import com.jamf.regatta.KV;
-import com.jamf.regatta.api.*;
-import com.jamf.regatta.options.DeleteOption;
-import com.jamf.regatta.options.GetOption;
-import com.jamf.regatta.options.PutOption;
+import com.jamf.regatta.core.api.ByteSequence;
+import com.jamf.regatta.core.KV;
+import com.jamf.regatta.core.api.*;
+import com.jamf.regatta.core.options.DeleteOption;
+import com.jamf.regatta.core.options.GetOption;
+import com.jamf.regatta.core.options.PutOption;
 import com.jamf.regatta.proto.DeleteRangeRequest;
 import com.jamf.regatta.proto.KVGrpc;
 import com.jamf.regatta.proto.PutRequest;
@@ -35,7 +35,7 @@ public class KVImpl implements KV {
                 .build();
 
         var put = stub.put(request);
-        return new PutResponse(new Response.HeaderImpl(put.getHeader()));
+        return new PutResponse(new Response.HeaderImpl(put.getHeader()), new KeyValue(ByteSequence.from(put.getPrevKv().getKey()), ByteSequence.from(put.getPrevKv().getValue())));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class KVImpl implements KV {
 
         var get = stub.range(request);
         var kvs = get.getKvsList().stream().map(keyValue -> new KeyValue(ByteSequence.from(keyValue.getKey()), ByteSequence.from(keyValue.getValue()))).toList();
-        return new GetResponse(new Response.HeaderImpl(get.getHeader()), kvs);
+        return new GetResponse(new Response.HeaderImpl(get.getHeader()), kvs, get.getCount());
     }
 
     @Override
@@ -75,6 +75,7 @@ public class KVImpl implements KV {
                 .build();
 
         var delete = stub.deleteRange(request);
-        return new DeleteResponse(new Response.HeaderImpl(delete.getHeader()));
+        var kvs = delete.getPrevKvsList().stream().map(keyValue -> new KeyValue(ByteSequence.from(keyValue.getKey()), ByteSequence.from(keyValue.getValue()))).toList();
+        return new DeleteResponse(new Response.HeaderImpl(delete.getHeader()), kvs, delete.getDeleted());
     }
 }

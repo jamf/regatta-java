@@ -1,4 +1,4 @@
-package com.jamf.regatta;
+package com.jamf.regatta.core;
 
 public interface Client extends AutoCloseable {
 

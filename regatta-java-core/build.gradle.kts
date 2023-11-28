@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
+    api(project(":regatta-java-grpc"))
     api("com.google.protobuf:protobuf-java:${protobufVersion}")
     api("io.grpc:grpc-core:${grpcVersion}")
     api("io.grpc:grpc-stub:${grpcVersion}")
@@ -21,7 +22,6 @@ dependencies {
 
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation(project(":regatta-java-grpc"))
     implementation("org.slf4j:slf4j-api:${slf4jVersion}")
     implementation("org.slf4j:slf4j-jdk14:${slf4jVersion}")
 }

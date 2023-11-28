@@ -1,4 +1,4 @@
-package com.jamf.regatta.api;
+package com.jamf.regatta.core.api;
 
 import com.jamf.regatta.proto.ResponseHeader;
 
@@ -9,7 +9,7 @@ public interface Response {
      *
      * @return the header.
      */
-    Header getHeader();
+    Header header();
 
     interface Header {
 

@@ -1,4 +1,4 @@
-package com.jamf.regatta;
+package com.jamf.regatta.core.api;
 
 import com.google.protobuf.ByteString;
 

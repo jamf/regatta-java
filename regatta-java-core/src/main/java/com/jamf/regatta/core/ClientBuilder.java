@@ -1,7 +1,7 @@
-package com.jamf.regatta;
+package com.jamf.regatta.core;
 
 import com.google.common.base.Strings;
-import com.jamf.regatta.impl.ClientImpl;
+import com.jamf.regatta.core.impl.ClientImpl;
 import io.grpc.ClientInterceptor;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NegotiationType;

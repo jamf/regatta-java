@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2023 The jetcd authors
+ * Copyright 2016-2021 The jetcd authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package com.jamf.regatta;
+package com.jamf.regatta.core;
 
-public class Preconditions {
+public interface CloseableClient extends AutoCloseable {
 
-    public static void checkArgument(boolean expression, String errorMessage) {
-        if (!expression) {
-            throw new IllegalArgumentException(errorMessage);
-        }
+    /**
+     * close the client and release its resources.
+     */
+    @Override
+    default void close() {
+        // noop
     }
 
-    public static void checkState(boolean expression, String errorMessage) {
-        if (!expression) {
-            throw new IllegalStateException(errorMessage);
-        }
-    }
 }

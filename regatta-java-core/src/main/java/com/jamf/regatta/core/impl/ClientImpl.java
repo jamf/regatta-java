@@ -1,7 +1,7 @@
-package com.jamf.regatta.impl;
+package com.jamf.regatta.core.impl;
 
-import com.jamf.regatta.Client;
-import com.jamf.regatta.KV;
+import com.jamf.regatta.core.Client;
+import com.jamf.regatta.core.KV;
 import io.grpc.Channel;
 
 public final class ClientImpl implements Client {

@@ -1,16 +1,16 @@
 package com.jamf.regatta;
 
+import com.google.protobuf.ByteString;
+
 import java.nio.charset.Charset;
 import java.util.Objects;
-
-import com.google.protobuf.ByteString;
 
 /**
  * Etcd binary bytes, easy to convert between byte[], String and ByteString.
  */
 public final class ByteSequence {
     public static final ByteSequence EMPTY = new ByteSequence(ByteString.EMPTY);
-    public static final ByteSequence NAMESPACE_DELIMITER = ByteSequence.from(new byte[] { '/' });
+    public static final ByteSequence NAMESPACE_DELIMITER = ByteSequence.from(new byte[]{'/'});
 
     private final int hashVal;
     private final ByteString byteString;
@@ -24,9 +24,9 @@ public final class ByteSequence {
     /**
      * Tests if this <code>ByteSequence</code> starts with the specified prefix.
      *
-     * @param  prefix the prefix.
-     * @return        <code>true</code> if the byte sequence represented by the argument is a prefix of the
-     *                byte sequence represented by this string; <code>false</code> otherwise.
+     * @param prefix the prefix.
+     * @return <code>true</code> if the byte sequence represented by the argument is a prefix of the
+     * byte sequence represented by this string; <code>false</code> otherwise.
      */
     public boolean startsWith(ByteSequence prefix) {
         if (prefix == null) {
@@ -38,8 +38,8 @@ public final class ByteSequence {
     /**
      * Concatenate the given {@code ByteSequence} to this one.
      *
-     * @param  other string to concatenate
-     * @return       a new {@code ByteSequence} instance
+     * @param other string to concatenate
+     * @return a new {@code ByteSequence} instance
      */
     public ByteSequence concat(ByteSequence other) {
         Objects.requireNonNull(other, "other byteSequence should not be null");
@@ -49,8 +49,8 @@ public final class ByteSequence {
     /**
      * Concatenate the given {@code ByteSequence} to this one.
      *
-     * @param  other string to concatenate
-     * @return       a new {@code ByteSequence} instance
+     * @param other string to concatenate
+     * @return a new {@code ByteSequence} instance
      */
     public ByteSequence concat(ByteString other) {
         Objects.requireNonNull(other, "other byteSequence should not be null");
@@ -61,8 +61,8 @@ public final class ByteSequence {
      * Return the substring from {@code ByteSequence}, inclusive, to the end of the
      * string.
      *
-     * @param  beginIndex                start at this index
-     * @return                           substring sharing underlying data
+     * @param beginIndex start at this index
+     * @return substring sharing underlying data
      * @throws IndexOutOfBoundsException if {@code beginIndex < 0} or
      *                                   {@code beginIndex > size()}.
      */
@@ -74,9 +74,9 @@ public final class ByteSequence {
      * Return the substring from {@code beginIndex}, inclusive, to {@code endIndex},
      * exclusive.
      *
-     * @param  beginIndex                start at this index
-     * @param  endIndex                  the last character is the one before this index
-     * @return                           substring sharing underlying data
+     * @param beginIndex start at this index
+     * @param endIndex   the last character is the one before this index
+     * @return substring sharing underlying data
      * @throws IndexOutOfBoundsException if {@code beginIndex < 0},
      *                                   {@code endIndex > size()}, or
      *                                   {@code beginIndex > endIndex}.

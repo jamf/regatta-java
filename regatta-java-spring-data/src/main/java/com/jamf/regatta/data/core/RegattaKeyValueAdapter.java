@@ -1,105 +1,143 @@
 package com.jamf.regatta.data.core;
 
-import java.io.IOException;
-import java.util.Map;
-
+import com.jamf.regatta.core.Client;
+import com.jamf.regatta.core.KV;
+import com.jamf.regatta.core.api.ByteSequence;
+import com.jamf.regatta.core.api.GetResponse;
+import com.jamf.regatta.core.api.KeyValue;
+import com.jamf.regatta.core.options.DeleteOption;
+import com.jamf.regatta.core.options.GetOption;
+import com.jamf.regatta.core.options.PutOption;
+import com.jamf.regatta.data.convert.RegattaConverter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.keyvalue.core.AbstractKeyValueAdapter;
+import org.springframework.data.keyvalue.core.ForwardingCloseableIterator;
 import org.springframework.data.util.CloseableIterator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jamf.regatta.ByteSequence;
-import com.jamf.regatta.Client;
-import com.jamf.regatta.api.GetResponse;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RegattaKeyValueAdapter extends AbstractKeyValueAdapter implements InitializingBean, ApplicationContextAware {
 
-	private Client regattaClient;
+    private final RegattaConverter converter;
+    private final KV kv;
 
-	private static final ObjectMapper objectMapper = new ObjectMapper();
+    public RegattaKeyValueAdapter(Client regattaClient, RegattaConverter converter) {
+        this.kv = regattaClient.getKVClient();
+        this.converter = converter;
+    }
 
-	public RegattaKeyValueAdapter(Client regattaClient) {
-		this.regattaClient = regattaClient;
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
+    }
 
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    @Override
+    public Object put(Object id, Object item, String keyspace) {
+        var table = converter.write(keyspace);
+        var key = converter.write(id);
+        var value = converter.write(item);
+        kv.put(table, key, value, PutOption.DEFAULT);
+        return null;
+    }
 
-	}
+    @Override
+    public boolean contains(Object id, String keyspace) {
+        var table = converter.write(keyspace);
+        var key = converter.write(id);
+        var response = kv.get(table, key, GetOption.builder().withCountOnly(true).build());
+        return response.count() > 0;
+    }
 
-	@Override
-	public Object put(Object id, Object item, String keyspace) {
-		return regattaClient.getKVClient()
-				.put(ByteSequence.fromUtf8String(keyspace), ByteSequence.from((byte[]) id), ByteSequence.from((byte[]) item));
-	}
+    @Override
+    public Object get(Object id, String keyspace) {
+        return this.get(id, keyspace, Object.class);
+    }
 
-	@Override
-	public boolean contains(Object id, String keyspace) {
-		return false;
-	}
+    @Override
+    public <T> T get(Object id, String keyspace, Class<T> type) {
+        var table = converter.write(keyspace);
+        var key = converter.write(id);
 
-	@Override
-	public Object get(Object id, String keyspace) {
-		return this.get(id, keyspace, Object.class);
-	}
+        GetResponse response = kv.get(table, key);
+        if (response.kvs().isEmpty()) {
+            return null;
+        }
 
-	@Override
-	public <T> T get(Object id, String keyspace, Class<T> type) {
-		GetResponse response = regattaClient.getKVClient()
-				.get(ByteSequence.fromUtf8String(keyspace), ByteSequence.fromUtf8String((String) id));
+        return converter.read(response.kvs().get(0).value(), type);
+    }
 
-		if (response.kvs().isEmpty()) {
-			return null;
-		}
+    @Override
+    public Object delete(Object id, String keyspace) {
+        return delete(id, keyspace, Object.class);
 
-		var data = response.kvs().get(0).value().getBytes();
-		try {
-			return objectMapper.readValue(data, type);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    }
 
-	@Override
-	public Object delete(Object id, String keyspace) {
-		return regattaClient.getKVClient().delete(ByteSequence.fromUtf8String(keyspace), ByteSequence.from((byte[]) id));
-	}
+    @Override
+    public <T> T delete(Object id, String keyspace, Class<T> type) {
+        var table = converter.write(keyspace);
+        var key = converter.write(id);
 
-	@Override
-	public Iterable<?> getAllOf(String keyspace) {
-		return null;
-	}
+        var resp = kv.delete(table, key, DeleteOption.builder().withPrevKV(true).build());
+        if (resp.deleted() > 0) {
+            return converter.read(resp.prevKv().get(0).value(), type);
+        }
+        return null;
 
-	@Override
-	public CloseableIterator<Map.Entry<Object, Object>> entries(String keyspace) {
-		return null;
-	}
+    }
 
-	@Override
-	public void deleteAllOf(String keyspace) {
+    @Override
+    public Iterable<?> getAllOf(String keyspace) {
+        return getAllOf(keyspace, Object.class);
+    }
 
-	}
+    @Override
+    public <T> Iterable<T> getAllOf(String keyspace, Class<T> type) {
+        var table = converter.write(keyspace);
+        var response = kv.get(table, ByteSequence.from(new byte[]{0}), GetOption.builder().withRange(ByteSequence.from(new byte[]{0})).build());
+        return () -> response.kvs().stream().map(keyValue -> converter.read(keyValue.value(), type)).iterator();
+    }
 
-	@Override
-	public void clear() {
+    @Override
+    public CloseableIterator<Map.Entry<Object, Object>> entries(String keyspace) {
+        return entries(keyspace, Object.class);
+    }
 
-	}
+    @Override
+    public <T> CloseableIterator<Map.Entry<Object, T>> entries(String keyspace, Class<T> type) {
+        var table = converter.write(keyspace);
+        var response = kv.get(table, ByteSequence.from(new byte[]{0}), GetOption.builder().withRange(ByteSequence.from(new byte[]{0})).build());
+        Map<Object, T> collect = response.kvs().stream().collect(Collectors.toMap(KeyValue::key, keyValue -> converter.read(keyValue.value(), type)));
+        return new ForwardingCloseableIterator<>(collect.entrySet().iterator());
+    }
 
-	@Override
-	public long count(String keyspace) {
-		return 0;
-	}
+    @Override
+    public void deleteAllOf(String keyspace) {
+        var table = converter.write(keyspace);
+        kv.delete(table, ByteSequence.from(new byte[]{0}), DeleteOption.builder().withRange(ByteSequence.from(new byte[]{0})).build());
+    }
 
-	@Override
-	public void destroy() throws Exception {
+    @Override
+    public void clear() {
 
-	}
+    }
+
+    @Override
+    public long count(String keyspace) {
+        var table = converter.write(keyspace);
+        var response = kv.get(table, ByteSequence.from(new byte[]{0}), GetOption.builder().withRange(ByteSequence.from(new byte[]{0})).withCountOnly(true).build());
+        return response.count();
+    }
+
+    @Override
+    public void destroy() throws Exception {
+
+    }
 }

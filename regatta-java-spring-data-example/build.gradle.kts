@@ -1,6 +1,5 @@
 plugins {
-    // Apply the java-library plugin for API and implementation separation.
-    `java-library`
+    `application`
     id("org.springframework.boot") version "3.1.6"
     id("io.spring.dependency-management") version "1.1.4"
 }
@@ -8,11 +7,11 @@ plugins {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
-    api("org.springframework.data:spring-data-keyvalue:3.2.0")
-    api(project(":regatta-java-core"))
+    implementation("org.springframework.data:spring-data-keyvalue")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation(project(mapOf("path" to ":regatta-java-spring-data")))
     testImplementation("org.springframework.boot:spring-boot-starter-test")

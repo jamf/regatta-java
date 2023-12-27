@@ -4,8 +4,12 @@ val grpcVersion = "1.57.2"
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    `maven-publish`
     id("com.google.protobuf") version "0.9.4"
 }
+
+group = "com.jamf.regatta"
+version = "1.0.0-SNAPSHOT"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -43,6 +47,14 @@ testing {
         val test by getting(JvmTestSuite::class) {
             // Use JUnit Jupiter test framework
             useJUnitJupiter("5.9.3")
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("library") {
+            from(components["java"])
         }
     }
 }

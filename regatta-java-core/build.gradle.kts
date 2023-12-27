@@ -5,7 +5,11 @@ val slf4jVersion = "2.0.9"
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    `maven-publish`
 }
+
+group = "com.jamf.regatta"
+version = "1.0.0-SNAPSHOT"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -32,6 +36,14 @@ testing {
         val test by getting(JvmTestSuite::class) {
             // Use JUnit Jupiter test framework
             useJUnitJupiter("5.9.3")
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("library") {
+            from(components["java"])
         }
     }
 }

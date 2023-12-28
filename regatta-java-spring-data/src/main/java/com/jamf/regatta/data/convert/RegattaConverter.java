@@ -1,6 +1,7 @@
 package com.jamf.regatta.data.convert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jamf.regatta.core.api.ByteSequence;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,6 +30,7 @@ public class RegattaConverter implements InitializingBean, ApplicationContextAwa
     @Override
     public void afterPropertiesSet() throws Exception {
         converter.addConverter(new JsonConverterFactory(this.applicationContext.getBean(ObjectMapper.class)));
+        converter.addConverter(new XmlConverterFactory(this.applicationContext.getBean(XmlMapper.class)));
         this.applicationContext.getBeansOfType(Converter.class).values().forEach(converter::addConverter);
     }
 

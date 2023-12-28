@@ -36,16 +36,20 @@ public class RegattaSpringDataExampleApplication {
 
 
     @Bean
-    public CommandLineRunner findBlockCaCertChain(TestRepository testRepository) {
+    public CommandLineRunner example(TestRepository testRepository) {
         return args -> {
             LOGGER.info("Repo count: {}", testRepository.count());
-            testRepository.save(new TestEntity("foo", List.of()));
+            testRepository.save(new TestEntity("foo", "label", List.of()));
             testRepository.findById("foo")
                     .ifPresent(entity -> LOGGER.info("Entity fetched: {}", entity));
-            testRepository.save(new TestEntity("foo", List.of(new AdditionalInfo("foo", "bar"))));
+            testRepository.save(new TestEntity("foo", "label", List.of(new AdditionalInfo("foo", "bar"))));
             testRepository.findAll().forEach(
                     entity -> LOGGER.info("Entity fetched: {}", entity)
             );
+            testRepository.findByLabel("label").forEach(
+                    entity -> LOGGER.info("Entity fetched: {}", entity)
+            );
+            LOGGER.info("Repo count: {}", testRepository.count());
             testRepository.deleteAll();
         };
     }

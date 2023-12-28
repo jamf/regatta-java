@@ -8,5 +8,5 @@ import java.util.List;
 
 @KeySpace("regatta-test")
 @RegattaValueMapping(RegattaValueMapping.Type.JSON)
-public record TestEntity(@Id String id, List<AdditionalInfo> additionalInfo) {
+public record TestEntity(@Id String id, String label, List<AdditionalInfo> additionalInfo) {
 }

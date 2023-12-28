@@ -9,6 +9,6 @@ public @interface RegattaValueMapping {
     Type value() default Type.JSON;
 
     enum Type {
-        JSON
+        XML, JSON
     }
 }

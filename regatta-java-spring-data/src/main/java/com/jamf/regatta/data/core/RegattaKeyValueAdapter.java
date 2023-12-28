@@ -9,6 +9,7 @@ import com.jamf.regatta.core.options.DeleteOption;
 import com.jamf.regatta.core.options.GetOption;
 import com.jamf.regatta.core.options.PutOption;
 import com.jamf.regatta.data.convert.RegattaConverter;
+import com.jamf.regatta.data.query.RegattaQueryCreator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +27,7 @@ public class RegattaKeyValueAdapter extends AbstractKeyValueAdapter implements I
     private final KV kv;
 
     public RegattaKeyValueAdapter(Client regattaClient, RegattaConverter converter) {
+        super(new RegattaQueryEngine());
         this.kv = regattaClient.getKVClient();
         this.converter = converter;
     }

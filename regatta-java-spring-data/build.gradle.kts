@@ -19,7 +19,7 @@ dependencies {
 
     implementation("com.fasterxml.jackson.core:jackson-core:2.16.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.1")
 }
 
 testing {

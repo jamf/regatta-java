@@ -1,4 +1,4 @@
-val protocVersion = "3.24.1"
+val protocVersion = "3.25.1"
 val grpcVersion = "1.60.1"
 
 plugins {

@@ -1,4 +1,4 @@
-val springDataVersion = "3.2.0"
+val springDataVersion = "3.2.1"
 val springContextSupportVersion = "6.1.2"
 val jacksonVersion = "2.16.1"
 

@@ -3,7 +3,7 @@
  */
 
 val grpcVersion = "1.61.1"
-val protobufVersion = "3.25.2"
+val protobufVersion = "3.25.3"
 val slf4jVersion = "2.0.11"
 val snappyVersion = "1.1.10.5"
 

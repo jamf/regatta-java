@@ -269,45 +269,48 @@ service Tables {
 
   // Get names of all the tables present in the cluster.
   // This procedure is available in both leader and follower clusters.
-  rpc List(GetTableRequest) returns (GetTablesResponse);
+  rpc List(ListTablesRequest) returns (ListTablesResponse);
 }
 
 // CreateTableRequest describes the table to be created.
 message CreateTableRequest {
   // Name of the table to be created.
-  bytes name = 1;
+  string name = 1;
   // config the table configuration values.
   google.protobuf.Struct config = 5;
 }
 
 // CreateTableResponse describes the newly created table.
 message CreateTableResponse {
-  // Shard ID the created table.
-  uint64 shard_id = 1;
-  // config the table configuration values.
-  google.protobuf.Struct config = 5;
+  // id the created table.
+  string id = 1;
 }
 
 // DeleteTableRequest describes the table to be deleted.
 message DeleteTableRequest {
-  // Name of the table to be deleted.
-  bytes table = 1;
+  // name of the table to be deleted.
+  string name = 1;
 }
 
+// DeleteTableResponse when the table was successfully deleted.
 message DeleteTableResponse {}
 
-message GetTableRequest {}
+// ListTablesRequest requests the list of currently registered tables.
+message ListTablesRequest {}
 
 // TableInfo describes a single table.
 message TableInfo {
-  // Name of the table.
-  bytes table = 1;
+  // name of the table.
+  string name = 1;
 
-  // Shard ID of the table.
-  uint64 shard_id = 2;
+  // id of the table.
+  string id = 2;
+
+  // config the table configuration values.
+  google.protobuf.Struct config = 5;
 }
 
 // FollowerGetTablesResponse contains information about tables stored in the cluster.
-message GetTablesResponse {
+message ListTablesResponse {
   repeated TableInfo tables = 1;
 }

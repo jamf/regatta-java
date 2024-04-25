@@ -3,7 +3,7 @@
  */
 
 val springDataVersion = "3.2.5"
-val springContextSupportVersion = "6.1.3"
+val springContextSupportVersion = "6.1.6"
 val jacksonVersion = "2.16.1"
 
 plugins {

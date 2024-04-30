@@ -10,7 +10,9 @@ public interface Client extends AutoCloseable {
         return new ClientBuilder();
     }
 
-    KV getKVClient();
+	KV getKVClient();
 
-    Cluster getClusterClient();
+	Cluster getClusterClient();
+
+	Tables getTablesClient();
 }

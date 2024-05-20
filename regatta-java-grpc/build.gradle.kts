@@ -3,7 +3,7 @@
  */
 
 val protocVersion = "3.25.2"
-val grpcVersion = "1.63.0"
+val grpcVersion = "1.64.0"
 
 plugins {
     id("regatta.library-conventions")

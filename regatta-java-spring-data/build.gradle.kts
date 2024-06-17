@@ -2,7 +2,7 @@
  * Copyright JAMF Software, LLC
  */
 
-val springDataVersion = "3.2.5"
+val springDataVersion = "3.3.1"
 val springContextSupportVersion = "6.1.6"
 val jacksonVersion = "2.17.1"
 

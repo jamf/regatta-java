@@ -7,7 +7,7 @@ val protobufVersion = "3.25.2"
 val slf4jVersion = "2.0.13"
 val snappyVersion = "1.1.10.5"
 val jupiterVersion = "5.10.2"
-val grpcTestingVersion = "1.63.0"
+val grpcTestingVersion = "1.65.0"
 val assertjVersion = "3.25.3"
 
 plugins {

@@ -2,7 +2,7 @@
  * Copyright JAMF Software, LLC
  */
 
-val protocVersion = "3.25.2"
+val protocVersion = "4.27.2"
 val grpcVersion = "1.63.0"
 
 plugins {

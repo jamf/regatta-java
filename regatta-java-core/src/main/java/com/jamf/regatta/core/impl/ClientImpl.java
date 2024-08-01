@@ -16,8 +16,10 @@ public final class ClientImpl implements Client {
     private final KV kvClient;
     private final Cluster clusterClient;
     private final Tables tables;
+    private final Runnable onClose;
 
-    public ClientImpl(Channel channel) {
+    public ClientImpl(Channel channel, Runnable onClose) {
+        this.onClose = onClose;
         this.kvClient = new KVImpl(channel);
         this.clusterClient = new ClusterImpl(channel);
 		this.tables = new TablesImpl(channel);
@@ -40,6 +42,6 @@ public final class ClientImpl implements Client {
 
     @Override
     public void close() throws Exception {
-        kvClient.close();
+        onClose.run();
     }
 }

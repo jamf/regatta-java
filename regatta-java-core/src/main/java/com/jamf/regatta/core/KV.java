@@ -12,6 +12,8 @@ import com.jamf.regatta.core.options.DeleteOption;
 import com.jamf.regatta.core.options.GetOption;
 import com.jamf.regatta.core.options.PutOption;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
 public interface KV extends CloseableClient {
@@ -32,6 +34,7 @@ public interface KV extends CloseableClient {
      * @param table table in ByteSequence
      * @param key   key in ByteSequence
      * @param value value in ByteSequence
+     * @param option options for the put operation
      * @return PutResponse
      */
     PutResponse put(ByteSequence table, ByteSequence key, ByteSequence value, PutOption option);
@@ -50,9 +53,31 @@ public interface KV extends CloseableClient {
      *
      * @param table table in ByteSequence
      * @param key   key in ByteSequence
+     * @param option options for the get operation
      * @return GetResponse
      */
     GetResponse get(ByteSequence table, ByteSequence key, GetOption option);
+
+    /**
+     * Asynchronously retrieve value for the given key
+     *
+     * @param table table in ByteSequence
+     * @param key   key in ByteSequence
+     * @param executor executor that will be used complete the returned completable future
+     * @return GetResponse
+     */
+    CompletableFuture<GetResponse> getAsync(ByteSequence table, ByteSequence key, Executor executor);
+
+    /**
+     * Asynchronously retrieve value for the given key
+     *
+     * @param table table in ByteSequence
+     * @param key   key in ByteSequence
+     * @param option options for the get operation
+     * @param executor executor that will be used complete the returned completable future
+     * @return GetResponse
+     */
+    CompletableFuture<GetResponse> getAsync(ByteSequence table, ByteSequence key, GetOption option, Executor executor);
 
     /**
      * retrieve values for the given keys.
@@ -77,6 +102,7 @@ public interface KV extends CloseableClient {
      *
      * @param table table in ByteSequence
      * @param key   key in ByteSequence
+     * @param option options for the delete operation
      * @return DeleteResponse
      */
     DeleteResponse delete(ByteSequence table, ByteSequence key, DeleteOption option);

@@ -148,7 +148,8 @@ public class ClientBuilder {
                 .with(SnappyCodec.INSTANCE, true);
         channelBuilder.decompressorRegistry(decompressorRegistry);
 
-        return new ClientImpl(channelBuilder.build());
+        var channel = channelBuilder.build();
+        return new ClientImpl(channel, channel::shutdown);
     }
 
     private static SslContextBuilder toSslContextBuilder(SSLFactory sslFactory) {

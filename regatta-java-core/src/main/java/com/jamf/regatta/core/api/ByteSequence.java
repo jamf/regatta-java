@@ -6,6 +6,7 @@ package com.jamf.regatta.core.api;
 
 import com.google.protobuf.ByteString;
 
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
@@ -123,6 +124,10 @@ public final class ByteSequence {
      */
     public ByteSequence substring(int beginIndex, int endIndex) {
         return new ByteSequence(this.byteString.substring(beginIndex, endIndex));
+    }
+
+    public InputStream asInputStream() {
+        return this.byteString.newInput();
     }
 
     @Override
